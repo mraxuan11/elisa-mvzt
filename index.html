@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elisa MVZT</title>
+<style>
+:root{
+  --bg-main:#f6f2fd;
+  --card-bg:#ffffff;
+  --border-color:#d8cdf5;
+  --text-primary:#3b2a63;
+  --text-secondary:#8b7bb0;
+  --accent:#a78bfa;
+  --accent-dark:#8b7fe8;
+  --accent-teal:#c4b5fd;
+  --green:#16a34a;
+  --green-bg:#e9f9ee;
+  --amber:#b45309;
+  --amber-bg:#fef3e0;
+  --red:#dc2626;
+  --red-bg:#fdecec;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+  font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg-main);
+  color:var(--text-primary);
+  padding:10px;
+  padding-bottom:40px;
+}
+@media (min-width:700px){
+  body{
+    max-width:1320px;
+    margin:0 auto;
+    background:var(--bg-main);
+    padding:28px;
+    font-size:15px;
+  }
+  html{
+    background:#ece6fa;
+  }
+  .card{padding:20px 24px;}
+  .card h2{font-size:13.5px;}
+  .plate{
+    grid-template-columns:38px repeat(12,minmax(74px,1fr));
+    gap:5px;
+  }
+  .ph{font-size:13px;}
+  .well input{font-size:14.5px;padding:10px 4px;border-radius:8px;}
+  .sp-well{font-size:13.5px;min-height:40px;border-radius:8px;}
+  .sp-well .sn{font-size:9.5px;}
+  .well .sn{font-size:9.5px;}
+  .field label{font-size:12px;}
+  .field input, .field select{padding:10px 12px;font-size:15px;border-radius:9px;}
+  .toggle-btn{padding:12px 8px;font-size:14px;border-radius:9px;}
+  .btn{padding:12px;font-size:14px;border-radius:10px;}
+  .out-box .val{font-size:20px;}
+  .out-box .lbl{font-size:11px;}
+  .out-box{padding:12px;}
+  .note{font-size:11.5px;}
+  h1{font-size:19px;}
+  .header p{font-size:12.5px;}
+  .header{padding:16px 18px;}
+  .sop-text{font-size:13.5px;padding:9px 10px;}
+  .sop-sub{font-size:11.5px;}
+  .sop-check{width:20px;height:20px;}
+  .sop-check-col{width:40px;}
+  .valid-box .v{font-size:17px;}
+  .valid-box .t{font-size:11px;}
+  .sum-box .n{font-size:26px;}
+  .sum-box .l{font-size:11px;}
+  .legend{font-size:11.5px;}
+  .detail-box{font-size:13.5px;padding:14px 16px;}
+  .detail-box .dt-formula{font-size:13px;padding:8px 10px;}
+  .two-col{display:flex;gap:16px;align-items:flex-start;}
+  .col-left{flex:0 0 400px;}
+  .col-right{flex:1;min-width:0;}
+}
+.header{
+  display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,#c4b5fd 0%,#a78bfa 100%);
+  padding:12px 14px;border-radius:12px;
+  box-shadow:0 2px 10px rgba(167,139,250,.35);
+  margin-bottom:10px;
+}
+.header h1{font-size:15px;font-weight:800;letter-spacing:.3px;color:#3b2a63;}
+.header p{font-size:10.5px;color:#4c3a78;font-weight:600;margin-top:1px;}
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--border-color);
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:10px;
+  box-shadow:0 1px 4px rgba(107,79,168,.06);
+}
+.card h2{
+  font-size:11px;text-transform:uppercase;letter-spacing:.6px;
+  color:var(--accent-dark);font-weight:800;margin-bottom:9px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.field{flex:1;min-width:110px;}
+.field label{display:block;font-size:10px;color:var(--text-secondary);font-weight:700;margin-bottom:3px;}
+.field input, .field select{
+  width:100%;padding:7px 8px;border:1px solid var(--border-color);
+  border-radius:8px;font-size:13px;color:var(--text-primary);background:#fbfaff;
+}
+.field input:focus,.field select:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+.toggle-group{display:flex;gap:6px;margin-bottom:9px;}
+.toggle-btn{
+  flex:1;padding:7px 4px;border-radius:8px;border:1px solid var(--border-color);
+  background:#fbfaff;color:var(--text-secondary);font-size:11px;font-weight:700;
+  text-align:center;cursor:pointer;
+}
+.toggle-btn.active{background:var(--accent);border-color:var(--accent-dark);color:#fff;}
+.reagent-out{
+  display:flex;gap:8px;margin-top:2px;
+}
+.out-box{
+  flex:1;background:#f3effc;border:1px solid var(--border-color);
+  border-radius:8px;padding:8px;text-align:center;
+}
+.out-box .val{font-size:16px;font-weight:800;color:var(--accent-dark);}
+.out-box .lbl{font-size:9.5px;color:var(--text-secondary);font-weight:700;margin-top:1px;}
+
+.plate-wrap{overflow-x:auto;}
+.plate{
+  display:grid;
+  grid-template-columns:26px repeat(12,minmax(46px,1fr));
+  gap:3px;
+  min-width:620px;
+}
+.ph{
+  font-size:10px;font-weight:800;color:var(--text-secondary);
+  display:flex;align-items:center;justify-content:center;
+}
+.well{
+  position:relative;
+}
+.well input{
+  width:100%;padding:5px 2px;border:1px solid var(--border-color);
+  border-radius:6px;font-size:11px;text-align:center;background:#fbfaff;color:var(--text-primary);
+}
+.well input:focus{outline:2px solid var(--accent);border-color:var(--accent);}
+.well .tag{
+  position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+  font-size:7.5px;font-weight:800;padding:0 3px;border-radius:4px;line-height:1.3;
+}
+.well.pc input{background:var(--red-bg);border-color:#f3b8b8;}
+.well.pc .tag{background:var(--red);color:#fff;}
+.well.nc input{background:#e6f1fc;border-color:#b9d7f5;}
+.well.nc .tag{background:#2563eb;color:#fff;}
+.well .sn{
+  position:absolute;bottom:-6px;right:1px;font-size:7px;color:var(--text-secondary);font-weight:700;
+}
+
+.legend{display:flex;gap:12px;margin-top:8px;font-size:9.5px;color:var(--text-secondary);flex-wrap:wrap;}
+.legend span{display:inline-flex;align-items:center;gap:4px;}
+.dot{width:8px;height:8px;border-radius:3px;display:inline-block;}
+
+.sp-well{
+  border-radius:6px;padding:4px 2px;text-align:center;font-size:9.5px;font-weight:800;
+  background:#f1eefa;color:var(--text-secondary);position:relative;min-height:28px;
+  display:flex;align-items:center;justify-content:center;
+}
+.sp-well.ctrl{background:#ece9f6;color:var(--text-secondary);font-weight:700;font-size:8.5px;}
+.sp-well.neg{background:var(--green-bg);color:var(--green);}
+.sp-well.dbt{background:var(--amber-bg);color:var(--amber);}
+.sp-well.pos{background:var(--red-bg);color:var(--red);}
+.sp-well .sn{
+  position:absolute;bottom:-6px;right:1px;font-size:7px;color:var(--text-secondary);font-weight:700;
+}
+.sp-well:not(.ctrl){cursor:pointer;}
+.detail-box{
+  margin-top:10px;background:#f3effc;border:1px solid var(--border-color);
+  border-radius:9px;padding:10px 12px;font-size:11.5px;color:var(--text-primary);
+}
+.detail-box .dt-title{font-weight:800;color:var(--accent-dark);font-size:12px;margin-bottom:5px;}
+.detail-box .dt-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.detail-box .dt-close{
+  background:#fff;border:1px solid var(--border-color);border-radius:6px;
+  width:22px;height:22px;line-height:20px;text-align:center;font-size:13px;font-weight:800;
+  color:var(--text-secondary);cursor:pointer;flex-shrink:0;
+}
+.detail-box .dt-formula{
+  font-family:'Consolas',monospace;font-size:11px;color:var(--text-secondary);
+  background:#fff;border:1px solid var(--border-color);border-radius:6px;padding:6px 8px;margin:5px 0;
+  line-height:1.6;word-break:break-word;
+}
+.detail-box .dt-result{font-weight:800;font-size:13px;margin-top:4px;}
+.detail-box .dt-result.neg{color:var(--green);}
+.detail-box .dt-result.dbt{color:var(--amber);}
+.detail-box .dt-result.pos{color:var(--red);}
+
+.valid-grid{display:flex;gap:8px;}
+.valid-box{
+  flex:1;background:#f9f7fe;border:1px solid var(--border-color);border-radius:8px;padding:8px;
+}
+.valid-box .t{font-size:9.5px;color:var(--text-secondary);font-weight:700;}
+.valid-box .v{font-size:14px;font-weight:800;margin-top:2px;}
+.badge{
+  display:inline-block;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:4px;
+}
+.badge.ok{background:var(--green-bg);color:var(--green);}
+.badge.notok{background:var(--red-bg);color:var(--red);}
+
+.summary{display:flex;gap:8px;margin-bottom:8px;}
+.sum-box{flex:1;border-radius:9px;padding:9px;text-align:center;}
+.sum-box.neg{background:var(--green-bg);}
+.sum-box.dbt{background:var(--amber-bg);}
+.sum-box.pos{background:var(--red-bg);}
+.sum-box .n{font-size:20px;font-weight:800;}
+.sum-box.neg .n{color:var(--green);}
+.sum-box.dbt .n{color:var(--amber);}
+.sum-box.pos .n{color:var(--red);}
+.sum-box .l{font-size:9.5px;font-weight:700;color:var(--text-secondary);margin-top:1px;}
+
+
+
+.btns{display:flex;gap:8px;margin-top:4px;}
+.btn{
+  flex:1;padding:9px;border-radius:9px;border:none;font-weight:800;font-size:12px;cursor:pointer;
+}
+.btn.primary{background:var(--accent);color:#fff;}
+.btn.ghost{background:#fff;color:var(--accent-dark);border:1px solid var(--border-color);}
+
+.note{font-size:10px;color:var(--text-secondary);line-height:1.5;margin-top:6px;}
+
+.sop-group{margin-bottom:10px;}
+.sop-group .sop-item:first-child{border-top-left-radius:8px;border-top-right-radius:8px;}
+.sop-group .sop-item:last-child{border-bottom-left-radius:8px;border-bottom-right-radius:8px;}
+.sop-group-title{
+  font-size:10px;font-weight:800;color:var(--accent-dark);
+  text-transform:uppercase;letter-spacing:.4px;margin:8px 0 5px;
+}
+.sop-item{
+  display:flex;align-items:stretch;gap:0;
+  border:1px solid var(--border-color);border-top:none;cursor:pointer;
+}
+.sop-item:first-child{border-top:1px solid var(--border-color);}
+.sop-check-col{
+  width:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  border-right:1px solid var(--border-color);background:#fafafd;
+}
+.sop-check{
+  width:17px;height:17px;border:1.5px solid var(--border-color);border-radius:5px;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;
+  background:#fff;font-size:11px;color:#fff;font-weight:800;
+}
+.sop-item.checked .sop-check-col{background:var(--green-bg);}
+.sop-item.checked .sop-check{background:var(--green);border-color:var(--green);}
+.sop-item.checked .sop-check::after{content:'✓';}
+.sop-text{font-size:11.5px;line-height:1.4;color:var(--text-primary);padding:7px 8px;flex:1;}
+.sop-item.checked .sop-text{color:var(--text-secondary);text-decoration:line-through;}
+.sop-sub{font-size:10px;color:var(--text-secondary);margin-top:1px;}
+.sop-progress{
+  font-size:10px;color:var(--text-secondary);font-weight:700;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.sop-bar{
+  height:5px;background:#ece6fa;border-radius:3px;overflow:hidden;margin-top:5px;
+}
+.sop-bar-fill{height:100%;background:var(--accent);border-radius:3px;transition:width .2s;}
+
+.timer-box{
+  display:flex;align-items:center;gap:6px;margin-top:5px;
+  background:#f3effc;border:1px solid var(--border-color);border-radius:8px;padding:5px 8px;
+}
+.timer-display{font-family:'Consolas',monospace;font-size:13px;font-weight:800;color:var(--accent-dark);min-width:42px;}
+.timer-btn{
+  border:none;border-radius:6px;padding:4px 9px;font-size:10px;font-weight:800;cursor:pointer;
+  background:var(--accent);color:#fff;
+}
+.timer-btn.reset{background:#fff;color:var(--text-secondary);border:1px solid var(--border-color);}
+.timer-box.done{background:var(--green-bg);border-color:#bde8cb;}
+.timer-box.done .timer-display{color:var(--green);}
+
+.print-area{display:none;}
+@media print{
+  @page{ size: portrait; margin: 8mm; }
+  body.printing > *:not(.print-area){display:none !important;}
+  body.printing .print-area{display:block !important;}
+  body.printing{margin:0;padding:0;}
+  .print-area{padding:0;font-family:Arial,sans-serif;color:#000;}
+  .print-area h1{font-size:14px;margin:0 0 2px;}
+  .print-area h2{font-size:10px;color:#000;margin:6px 0 3px;text-transform:uppercase;}
+  .print-area .pmeta{font-size:9px;color:#000;margin-bottom:5px;line-height:1.4;}
+  .print-area table{border-collapse:collapse;width:100%;margin-bottom:6px;font-size:8px;table-layout:fixed;page-break-inside:avoid;}
+  .print-area th,.print-area td{border:1px solid #000;text-align:center;padding:5px 0;color:#000;overflow:hidden;white-space:nowrap;}
+  .print-area th.rh{width:16px;}
+  .print-area td.ctrl{font-weight:bold;}
+  .print-area td.dbt,.print-area td.pos{font-weight:bold;}
+  .print-area .psn{display:block;font-size:6px;color:#000;line-height:1.3;}
+}
+.warn-banner{
+  background:var(--red-bg);color:var(--red);font-size:11px;font-weight:700;
+  padding:8px 10px;border-radius:8px;margin-bottom:8px;display:none;
+}
+.warn-banner.show{display:block;}
+</style>
+</head>
+<body>
+
+<div class="card" style="margin-bottom:8px;">
+  <div class="field">
+    <label>Pilih Ujian ELISA</label>
+    <select id="elisaSelect" onchange="switchElisaModule()">
+      <option value="brucella">Idvet Brucella</option>
+      <option value="nspfmd">Idvet NSP-FMD</option>
+      <option value="ahs">Idvet AHS</option>
+      <option value="ppr">Idvet PPR</option>
+      <option value="ingezim">Ingezim EIA</option>
+    </select>
+  </div>
+</div>
+
+<div id="comingSoon" class="card" style="display:none;text-align:center;padding:26px 14px;">
+  <div style="font-size:28px;margin-bottom:6px;">🚧</div>
+  <div style="font-weight:800;color:var(--text-primary);margin-bottom:3px;" id="comingSoonTitle">Modul akan datang</div>
+  <div style="font-size:11.5px;color:var(--text-secondary);">Kalkulator untuk ujian ini belum dibina lagi.</div>
+</div>
+
+<div id="brucellaModule">
+
+<div class="header">
+  <div>
+    <h1>🧪 Brucella ELISA</h1>
+    <p>ID.vet Screen Brucellosis Serum (indirect) — MVZT Pahang</p>
+  </div>
+</div>
+
+<div class="two-col">
+<div class="col-left">
+
+<div class="card">
+  <h2>Maklumat Ujian</h2>
+  <div class="row">
+    <div class="field"><label>Tarikh</label><input type="date" id="tarikh"></div>
+    <div class="field"><label>No Kes</label><input type="text" id="noKes" placeholder="cth: 123/2026"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Penyediaan Reagen</h2>
+  <div class="row">
+    <div class="field" style="max-width:150px;">
+      <label>Jumlah Sampel</label>
+      <input type="number" id="jumSampel" value="22" min="1" oninput="calcReagents()">
+    </div>
+  </div>
+
+  <div class="toggle-group">
+    <div class="toggle-btn active" id="tgConj10" onclick="setConjMode(10)">1:10 (45 min)</div>
+    <div class="toggle-btn" id="tgConj20" onclick="setConjMode(20)">1:20 (overnight)</div>
+  </div>
+  <div class="reagent-out">
+    <div class="out-box"><div class="val" id="conjConc">-</div><div class="lbl">Konsentrat Conjugate (µl)</div></div>
+    <div class="out-box"><div class="val" id="conjBuf">-</div><div class="lbl">Dilution Buffer 3 (µl)</div></div>
+  </div>
+
+  <div class="row" style="margin-top:10px;">
+    <div class="field" style="max-width:150px;"><label>Wash Solution — Jum (mL)</label>
+      <input type="number" id="washInput" value="600" min="1" oninput="calcReagents()">
+    </div>
+  </div>
+  <div class="reagent-out">
+    <div class="out-box"><div class="val" id="washConc">-</div><div class="lbl">Konsentrat 20x (mL)</div></div>
+    <div class="out-box"><div class="val" id="washH2O">-</div><div class="lbl">dH2O (mL)</div></div>
+  </div>
+  <div class="note">Formula ikut lembaran asal: Konsentrat = Bil.Sampel × 100 µl ÷ nisbah (10x/20x); Wash Vol = Input × 6 × 0.3 mL ÷ 20x.</div>
+</div>
+
+<div class="card">
+  <h2>Prosedur Ujian (SOP)
+    <span class="sop-progress" id="sopProgress">0/13</span>
+  </h2>
+  <div class="sop-bar"><div class="sop-bar-fill" id="sopBarFill" style="width:0%;"></div></div>
+
+  <div class="sop-group">
+    <div class="sop-group-title">Persediaan Plat</div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">190 µl dilution buffer 2 ke semua well</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl kawalan negatif ke A1 dan B1</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl kawalan positif ke C1 dan D1</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl setiap sampel ke well yang tinggal</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Tutup & inkubat 45 min pada 21°C <span class="sop-sub">(atau overnight pada 21°C)</span>
+      <div class="timer-box" id="timerBox45" onclick="event.stopPropagation()">
+        <div class="timer-display" id="timerDisp45">45:00</div>
+        <button class="timer-btn" onclick="event.stopPropagation();toggleTimer('45',45*60)">Mula</button>
+        <button class="timer-btn reset" onclick="event.stopPropagation();resetTimer('45',45*60)">Reset</button>
+      </div>
+    </div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Basuh 3x dengan 300 µl</div></div>
+  </div>
+
+  <div class="sop-group">
+    <div class="sop-group-title">Conjugate</div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Sediakan conjugate 1:10 (45min) atau 1:20 (overnight) — buffer 3</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">100 µl conjugate ke semua well</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Tutup & inkubat 30 min pada 21°C
+      <div class="timer-box" id="timerBox30" onclick="event.stopPropagation()">
+        <div class="timer-display" id="timerDisp30">30:00</div>
+        <button class="timer-btn" onclick="event.stopPropagation();toggleTimer('30',30*60)">Mula</button>
+        <button class="timer-btn reset" onclick="event.stopPropagation();resetTimer('30',30*60)">Reset</button>
+      </div>
+    </div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Basuh 3x dengan 300 µl</div></div>
+  </div>
+
+  <div class="sop-group">
+    <div class="sop-group-title">Substrat & Reader</div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">100 µl Substrate Solution</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Tutup & inkubat 15 min pada 21°C <span class="sop-sub">(dalam gelap)</span>
+      <div class="timer-box" id="timerBox15" onclick="event.stopPropagation()">
+        <div class="timer-display" id="timerDisp15">15:00</div>
+        <button class="timer-btn" onclick="event.stopPropagation();toggleTimer('15',15*60)">Mula</button>
+        <button class="timer-btn reset" onclick="event.stopPropagation();resetTimer('15',15*60)">Reset</button>
+      </div>
+    </div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">100 µl Stop Solution ke semua well</div></div>
+  </div>
+
+  <div class="sop-group">
+    <div class="sop-group-title">ELISA Reader</div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Ukur optical density pada 450 nm</div></div>
+  </div>
+
+  <div class="btns">
+    <button class="btn ghost" onclick="resetSop()">Reset Senarai Semak</button>
+  </div>
+</div>
+
+</div><!-- /col-left -->
+<div class="col-right">
+
+<div class="card">
+  <h2>Plat OD (96-well)
+    <span style="font-size:9px;font-weight:700;color:var(--text-secondary);">A1/B1=PC, C1/D1=NC</span>
+  </h2>
+  <div class="plate-wrap">
+    <div class="plate" id="plateGrid"></div>
+  </div>
+  <div class="legend">
+    <span><span class="dot" style="background:var(--red);"></span>PC — Kawalan Positif</span>
+    <span><span class="dot" style="background:#2563eb;"></span>NC — Kawalan Negatif</span>
+  </div>
+  <div class="note">💡 Boleh copy blok data OD terus dari Excel/reader dan paste kat mana-mana well — auto isi ikut baris/lajur. Sokong pemisah tab (Excel) atau koma (CSV reader).</div>
+  <div class="row" style="margin-top:6px;margin-bottom:0;">
+    <div class="field" style="max-width:170px;">
+      <label>Bacaan Sehingga (Well)</label>
+      <input type="text" id="lastWell" placeholder="cth: C6 atau 6C" style="text-transform:uppercase;" oninput="applyLastWellLimit()">
+    </div>
+  </div>
+  <div class="note">Reader baca ikut lajur (1A→1H, 2A→2H...). Isi well terakhir yang ada bacaan sebenar — baki (baseline/noise) akan diabaikan bila muat naik CSV atau paste.</div>
+  <div class="btns">
+    <button class="btn primary" onclick="document.getElementById('csvFile').click()">📁 Muat Naik CSV Reader</button>
+    <button class="btn ghost" onclick="clearPlate()">Kosongkan</button>
+  </div>
+  <input type="file" id="csvFile" accept=".csv,.txt" style="display:none;" onchange="handleCsvUpload(event)">
+</div>
+
+<div id="warnBanner" class="warn-banner">⚠ Ujian TIDAK SAH — semak semula kawalan (ODpc/ODnc)</div>
+
+<div class="card">
+  <h2>Validasi Kawalan</h2>
+  <div class="valid-grid">
+    <div class="valid-box">
+      <div class="t">Mean ODpc</div>
+      <div class="v" id="meanPc">-</div>
+      <div class="badge" id="badgePc">-</div>
+    </div>
+    <div class="valid-box">
+      <div class="t">Mean ODnc</div>
+      <div class="v" id="meanNc">-</div>
+      <div class="badge" id="badgeRatio">-</div>
+    </div>
+  </div>
+  <div class="note">Syarat: ODpc &gt; 0.350 dan ODpc / ODnc &gt; 3</div>
+</div>
+
+<div class="card">
+  <h2>Plat S/P%</h2>
+  <div class="plate-wrap">
+    <div class="plate" id="spPlateGrid"></div>
+  </div>
+  <div class="legend">
+    <span><span class="dot" style="background:var(--green);"></span>Negatif ≤110%</span>
+    <span><span class="dot" style="background:var(--amber);"></span>Doubtful 110–120%</span>
+    <span><span class="dot" style="background:var(--red);"></span>Positif ≥120%</span>
+  </div>
+  <div id="spDetail" class="detail-box" style="display:none;"></div>
+  <div class="note">👆 Tap mana-mana well untuk lihat pengiraan.</div>
+</div>
+
+<div class="card">
+  <h2>Plat Keputusan</h2>
+  <div class="plate-wrap">
+    <div class="plate" id="resPlateGrid"></div>
+  </div>
+  <div class="legend">
+    <span><span class="dot" style="background:var(--green);"></span>Negatif</span>
+    <span><span class="dot" style="background:var(--amber);"></span>Doubtful</span>
+    <span><span class="dot" style="background:var(--red);"></span>Positif</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Ringkasan Keputusan</h2>
+  <div class="summary">
+    <div class="sum-box neg"><div class="n" id="cntNeg">0</div><div class="l">NEGATIF</div></div>
+    <div class="sum-box dbt"><div class="n" id="cntDbt">0</div><div class="l">DOUBTFUL</div></div>
+    <div class="sum-box pos"><div class="n" id="cntPos">0</div><div class="l">POSITIF</div></div>
+  </div>
+  <div class="note">S/P % ≤ 110 Negatif · 110–120 Doubtful · ≥ 120 Positif</div>
+</div>
+
+</div><!-- /col-right -->
+</div><!-- /two-col -->
+
+<div class="card">
+  <button class="btn primary" style="width:100%;padding:11px;" onclick="exportPrint()">🖨️ Export / Print</button>
+</div>
+
+<div id="printArea" class="print-area"></div>
+
+<script>
+function switchElisaModule(){
+  const val = document.getElementById('elisaSelect').value;
+  const names = {
+    nspfmd: 'Idvet NSP-FMD',
+    ahs: 'Idvet AHS',
+    ppr: 'Idvet PPR',
+    ingezim: 'Ingezim EIA'
+  };
+  if(val==='brucella'){
+    document.getElementById('brucellaModule').style.display = 'block';
+    document.getElementById('comingSoon').style.display = 'none';
+  } else {
+    document.getElementById('brucellaModule').style.display = 'none';
+    document.getElementById('comingSoonTitle').textContent = names[val] + ' — akan datang';
+    document.getElementById('comingSoon').style.display = 'block';
+  }
+}
+
+const ROWS = ['A','B','C','D','E','F','G','H'];
+const COLS = 12;
+
+function sampleNumber(rowIdx, col){ // rowIdx 0-7 (A-H), col 1-12
+  if(col===1){
+    if(rowIdx<4) return null; // control wells
+    return rowIdx-3; // E=1,F=2,G=3,H=4
+  }
+  return 5 + (col-2)*8 + rowIdx;
+}
+function wellRole(rowIdx,col){
+  if(col===1){
+    if(rowIdx===0||rowIdx===1) return 'pc';
+    if(rowIdx===2||rowIdx===3) return 'nc';
+  }
+  return 'sample';
+}
+
+// build plate grid
+const grid = document.getElementById('plateGrid');
+let html = '<div class="ph"></div>';
+for(let c=1;c<=COLS;c++) html += `<div class="ph">${c}</div>`;
+for(let r=0;r<8;r++){
+  html += `<div class="ph">${ROWS[r]}</div>`;
+  for(let c=1;c<=COLS;c++){
+    const role = wellRole(r,c);
+    const sn = sampleNumber(r,c);
+    const id = `w_${ROWS[r]}${c}`;
+    let tag = '';
+    if(role==='pc') tag = '<div class="tag">PC</div>';
+    else if(role==='nc') tag = '<div class="tag">NC</div>';
+    html += `<div class="well ${role}">
+      ${tag}
+      <input type="number" step="0.0001" id="${id}" data-row="${r}" data-col="${c}" oninput="recalc()" onpaste="handlePaste(event,${r},${c})">
+      ${sn!==null?`<div class="sn">#${sn}</div>`:''}
+    </div>`;
+  }
+}
+grid.innerHTML = html;
+
+// build S/P% plate (read-only display, mirrors OD plate positions)
+const spGrid = document.getElementById('spPlateGrid');
+let spHtml = '<div class="ph"></div>';
+for(let c=1;c<=COLS;c++) spHtml += `<div class="ph">${c}</div>`;
+for(let r=0;r<8;r++){
+  spHtml += `<div class="ph">${ROWS[r]}</div>`;
+  for(let c=1;c<=COLS;c++){
+    const role = wellRole(r,c);
+    const sn = sampleNumber(r,c);
+    const id = `sp_${ROWS[r]}${c}`;
+    if(role!=='sample'){
+      spHtml += `<div class="sp-well ctrl">${role.toUpperCase()}</div>`;
+    } else {
+      spHtml += `<div class="sp-well" id="${id}" onclick="showSpDetail(${r},${c})">–<div class="sn">#${sn}</div></div>`;
+    }
+  }
+}
+spGrid.innerHTML = spHtml;
+
+// build Keputusan plate (Negatif/Doubtful/Positif labels)
+const resGrid = document.getElementById('resPlateGrid');
+let resHtml = '<div class="ph"></div>';
+for(let c=1;c<=COLS;c++) resHtml += `<div class="ph">${c}</div>`;
+for(let r=0;r<8;r++){
+  resHtml += `<div class="ph">${ROWS[r]}</div>`;
+  for(let c=1;c<=COLS;c++){
+    const role = wellRole(r,c);
+    const sn = sampleNumber(r,c);
+    const id = `res_${ROWS[r]}${c}`;
+    if(role!=='sample'){
+      resHtml += `<div class="sp-well ctrl">${role.toUpperCase()}</div>`;
+    } else {
+      resHtml += `<div class="sp-well" id="${id}" onclick="showSpDetail(${r},${c})">–<div class="sn">#${sn}</div></div>`;
+    }
+  }
+}
+resGrid.innerHTML = resHtml;
+
+let conjMode = 10;
+function setConjMode(mode){
+  conjMode = mode;
+  document.getElementById('tgConj10').classList.toggle('active', mode===10);
+  document.getElementById('tgConj20').classList.toggle('active', mode===20);
+  calcReagents();
+}
+function calcReagents(){
+  const n = parseFloat(document.getElementById('jumSampel').value) || 0;
+  const V = n*100; // ul total volume needed
+  const conc = conjMode>0 ? V/conjMode : 0;
+  const buf = V-conc;
+  document.getElementById('conjConc').textContent = conc? conc.toFixed(0):'-';
+  document.getElementById('conjBuf').textContent = buf? buf.toFixed(0):'-';
+
+  const nw = parseFloat(document.getElementById('washInput').value) || 0;
+  const Vw = nw*6*0.3; // ml
+  const concW = Vw/20;
+  const h2o = Vw-concW;
+  document.getElementById('washConc').textContent = concW? concW.toFixed(1):'-';
+  document.getElementById('washH2O').textContent = h2o? h2o.toFixed(1):'-';
+}
+calcReagents();
+
+function clearPlate(){
+  document.querySelectorAll('.plate input').forEach(i=>i.value='');
+  recalc();
+}
+
+function applyLastWellLimit(){
+  const limitRef = parseWellRef(document.getElementById('lastWell').value);
+  if(!limitRef){ recalc(); return; } // medan kosong/tak lengkap, tak buat apa-apa lagi
+  const limitIdx = readingOrderIndex(limitRef.row, limitRef.col);
+  for(let r=0;r<8;r++){
+    for(let c=1;c<=12;c++){
+      if(readingOrderIndex(r,c) > limitIdx){
+        const el = document.getElementById(`w_${ROWS[r]}${c}`);
+        if(el) el.value = '';
+      }
+    }
+  }
+  recalc();
+}
+
+
+function parseWellRef(str){
+  // terima "C6" (baris-lajur) ATAU "6C" (lajur-baris)
+  if(!str) return null;
+  const s = String(str).trim().toUpperCase();
+  let m = s.match(/^([A-H])(\d{1,2})$/);
+  if(m){
+    const row = ROWS.indexOf(m[1]);
+    const col = parseInt(m[2]);
+    if(row<0 || col<1 || col>12) return null;
+    return {row, col};
+  }
+  m = s.match(/^(\d{1,2})([A-H])$/);
+  if(m){
+    const col = parseInt(m[1]);
+    const row = ROWS.indexOf(m[2]);
+    if(row<0 || col<1 || col>12) return null;
+    return {row, col};
+  }
+  return null;
+}
+function readingOrderIndex(r,c){ return (c-1)*8 + r + 1; } // ikut turutan bacaan: 1A,1B..1H,2A,2B..2H (c:1-12, r:0-7)
+
+function fillPlateFromGrid(rowsData, startRow, startCol){
+  // rowsData: array of arrays (each inner array = one row's cell values as strings)
+  const limitRef = parseWellRef(document.getElementById('lastWell').value);
+  const limitIdx = limitRef ? readingOrderIndex(limitRef.row, limitRef.col) : null;
+
+  rowsData.forEach((cells, i)=>{
+    cells.forEach((cell, j)=>{
+      const r = startRow + i;
+      const c = startCol + j;
+      if(r>7 || r<0 || c<1 || c>12) return; // luar plat, abaikan
+      const el = document.getElementById(`w_${ROWS[r]}${c}`);
+      if(!el) return;
+      if(limitIdx!==null && readingOrderIndex(r,c) > limitIdx){
+        el.value = ''; // lepas had bacaan sebenar — kosongkan terus
+        return;
+      }
+      const v = String(cell).trim().replace(',', '.');
+      if(v==='') return;
+      const num = parseFloat(v);
+      if(isNaN(num)) return;
+      el.value = num;
+    });
+  });
+  recalc();
+}
+
+function parseDelimitedText(text){
+  const lines = text.replace(/\r/g,'').split('\n').filter(l=>l.length>0);
+  return lines.map(line=>{
+    // guna tab jika ada (paste dari Excel), sebaliknya koma (CSV reader)
+    const delim = line.includes('\t') ? '\t' : ',';
+    return line.split(delim);
+  });
+}
+
+function handlePaste(ev, startRow, startCol){
+  const text = (ev.clipboardData || window.clipboardData).getData('text');
+  if(!text) return;
+  ev.preventDefault();
+  fillPlateFromGrid(parseDelimitedText(text), startRow, startCol);
+}
+
+function handleCsvUpload(ev){
+  const file = ev.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    const text = e.target.result;
+    fillPlateFromGrid(parseDelimitedText(text), 0, 1); // mula dari A1
+  };
+  reader.readAsText(file);
+  ev.target.value = ''; // reset supaya boleh upload fail sama semula
+}
+
+let ROWS_G = ROWS; // alias for clarity in detail panel
+let _meanPc=null, _meanNc=null; // global snapshot, updated each recalc() for detail panel
+
+function buildPrintTable(getCellFn, getCtrlValFn){
+  // getCellFn(r,c) -> {text, cls} for sample wells; controls handled separately
+  let html = '<table><thead><tr><th class="rh"></th>';
+  for(let c=1;c<=COLS;c++) html += `<th>${c}</th>`;
+  html += '</tr></thead><tbody>';
+  for(let r=0;r<8;r++){
+    html += `<tr><th class="rh">${ROWS[r]}</th>`;
+    for(let c=1;c<=COLS;c++){
+      const role = wellRole(r,c);
+      if(role!=='sample'){
+        const ctrlVal = getCtrlValFn ? getCtrlValFn(r,c) : '';
+        html += `<td class="ctrl">${role.toUpperCase()}${ctrlVal? `<span class="psn">${ctrlVal}</span>`:''}</td>`;
+      } else {
+        const sn = sampleNumber(r,c);
+        const cell = getCellFn(r,c);
+        const isEmpty = cell.text==='–';
+        html += `<td class="${cell.cls||''}">${isEmpty?'–':cell.text+`<span class="psn">#${sn}</span>`}</td>`;
+      }
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+function formatTarikhForFilename(v){
+  // input type=date value = "YYYY-MM-DD" -> "DD-MM-YYYY"
+  if(!v) return '';
+  const parts = v.split('-');
+  if(parts.length!==3) return v;
+  return `${parts[2]}-${parts[1]}-${parts[0]}`;
+}
+
+function exportPrint(){
+  const tarikh = document.getElementById('tarikh').value || '-';
+  const noKes = document.getElementById('noKes').value || '-';
+
+  const tarikhFile = formatTarikhForFilename(document.getElementById('tarikh').value);
+  const printTitle = tarikhFile ? `Brucella ELISA - ${tarikhFile}` : 'Brucella ELISA';
+
+  const getCtrlOd = (r,c)=>{
+    const el = document.getElementById(`w_${ROWS[r]}${c}`);
+    const v = el && el.value!=='' ? parseFloat(el.value) : null;
+    return v!==null ? v.toFixed(4) : '';
+  };
+
+  const odTable = buildPrintTable((r,c)=>{
+    const el = document.getElementById(`w_${ROWS[r]}${c}`);
+    const v = el && el.value!=='' ? parseFloat(el.value) : null;
+    return {text: v!==null? v.toFixed(4) : '–'};
+  }, getCtrlOd);
+
+  const spTable = buildPrintTable((r,c)=>{
+    const el = document.getElementById(`w_${ROWS[r]}${c}`);
+    const od = el && el.value!=='' ? parseFloat(el.value) : null;
+    if(od===null || _meanPc===null || _meanNc===null || _meanPc===_meanNc){
+      return {text:'–'};
+    }
+    const sp = (od-_meanNc)/(_meanPc-_meanNc)*100;
+    let label, cls;
+    if(sp<=110){label='N';cls='';}
+    else if(sp<120){label='D';cls='dbt';}
+    else {label='P';cls='pos';}
+    return {text: sp.toFixed(0)+'% ('+label+')', cls};
+  });
+
+  const bodyContent = `
+    <h1>Brucella ELISA — Keputusan Ujian</h1>
+    <div class="pmeta">
+      <b>Ujian:</b> ID.vet Screen Brucellosis Serum (indirect)<br>
+      <b>Tarikh Ujian:</b> ${tarikh} &nbsp;&nbsp; <b>No Kes:</b> ${noKes}<br>
+      <b>Mean ODpc:</b> ${_meanPc!==null?_meanPc.toFixed(4):'-'} &nbsp;&nbsp;
+      <b>Mean ODnc:</b> ${_meanNc!==null?_meanNc.toFixed(4):'-'} &nbsp;&nbsp;
+      <b>Negatif:</b> ${document.getElementById('cntNeg').textContent} &nbsp;
+      <b>Doubtful:</b> ${document.getElementById('cntDbt').textContent} &nbsp;
+      <b>Positif:</b> ${document.getElementById('cntPos').textContent}
+    </div>
+    <h2>Plat OD</h2>
+    ${odTable}
+    <h2>Plat S/P%</h2>
+    ${spTable}
+    <div class="pmeta" style="margin-top:2px;">N = Negatif (≤110%) &nbsp; D = Doubtful (110–120%, tebal) &nbsp; P = Positif (≥120%, tebal)</div>
+  `;
+
+  const printDoc = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>${printTitle}</title>
+<style>
+  @page{ size: portrait; margin: 8mm; }
+  body{padding:0;margin:0;font-family:Arial,sans-serif;color:#000;}
+  h1{font-size:14px;margin:0 0 2px;}
+  h2{font-size:10px;color:#000;margin:6px 0 3px;text-transform:uppercase;}
+  .pmeta{font-size:9px;color:#000;margin-bottom:5px;line-height:1.4;}
+  table{border-collapse:collapse;width:100%;margin-bottom:6px;font-size:8px;table-layout:fixed;page-break-inside:avoid;}
+  th,td{border:1px solid #000;text-align:center;padding:5px 0;color:#000;overflow:hidden;white-space:nowrap;}
+  th.rh{width:16px;}
+  td.ctrl{font-weight:bold;}
+  td.dbt,td.pos{font-weight:bold;}
+  .psn{display:block;font-size:6px;color:#000;line-height:1.3;}
+</style>
+</head><body>
+${bodyContent}
+</body></html>`;
+
+  const win = window.open('', '_blank');
+  if(!win){
+    alert('Pop-up disekat. Sila benarkan pop-up untuk print/export.');
+    return;
+  }
+  win.document.open();
+  win.document.write(printDoc);
+  win.document.close();
+  win.onload = function(){
+    win.focus();
+    win.print();
+  };
+  // fallback in case onload doesn't fire (some webviews)
+  setTimeout(()=>{ win.focus(); win.print(); }, 400);
+}
+
+function updateSopProgress(){
+  const items = document.querySelectorAll('.sop-item');
+  const checked = document.querySelectorAll('.sop-item.checked').length;
+  document.getElementById('sopProgress').textContent = `${checked}/${items.length}`;
+  document.getElementById('sopBarFill').style.width = (items.length? checked/items.length*100:0)+'%';
+}
+function toggleSop(el){
+  el.classList.toggle('checked');
+  updateSopProgress();
+}
+function resetSop(){
+  document.querySelectorAll('.sop-item.checked').forEach(el=>el.classList.remove('checked'));
+  updateSopProgress();
+}
+updateSopProgress();
+
+// ===== Timer (45/30/15 min inkubasi) =====
+const timerState = {}; // key -> {remaining, running, intervalId}
+
+function formatMMSS(sec){
+  const m = Math.floor(sec/60);
+  const s = sec%60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function playBeep(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    for(let i=0;i<3;i++){
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.3, ctx.currentTime + i*0.35);
+      osc.start(ctx.currentTime + i*0.35);
+      osc.stop(ctx.currentTime + i*0.35 + 0.25);
+    }
+  }catch(e){ /* audio not available, ignore */ }
+}
+
+function toggleTimer(key, totalSec){
+  if(!timerState[key]){
+    timerState[key] = {remaining: totalSec, running:false, intervalId:null};
+  }
+  const st = timerState[key];
+  const btn = document.querySelector(`#timerBox${key} .timer-btn:not(.reset)`);
+  const box = document.getElementById(`timerBox${key}`);
+
+  if(st.running){
+    clearInterval(st.intervalId);
+    st.running = false;
+    btn.textContent = 'Sambung';
+    return;
+  }
+
+  box.classList.remove('done');
+  st.running = true;
+  btn.textContent = 'Jeda';
+  st.intervalId = setInterval(()=>{
+    st.remaining--;
+    document.getElementById(`timerDisp${key}`).textContent = formatMMSS(Math.max(st.remaining,0));
+    if(st.remaining<=0){
+      clearInterval(st.intervalId);
+      st.running = false;
+      btn.textContent = 'Mula';
+      box.classList.add('done');
+      playBeep();
+      if(navigator.vibrate) navigator.vibrate([300,100,300,100,300]);
+    }
+  }, 1000);
+}
+
+function resetTimer(key, totalSec){
+  if(timerState[key] && timerState[key].intervalId) clearInterval(timerState[key].intervalId);
+  timerState[key] = {remaining: totalSec, running:false, intervalId:null};
+  document.getElementById(`timerDisp${key}`).textContent = formatMMSS(totalSec);
+  document.getElementById(`timerBox${key}`).classList.remove('done');
+  const btn = document.querySelector(`#timerBox${key} .timer-btn:not(.reset)`);
+  btn.textContent = 'Mula';
+}
+
+function closeSpDetail(){
+  document.getElementById('spDetail').style.display = 'none';
+}
+
+function showSpDetail(r, c){
+  const well = `${ROWS[r]}${c}`;
+  const sn = sampleNumber(r,c);
+  const el = document.getElementById(`w_${well}`);
+  const od = el ? parseFloat(el.value) : NaN;
+  const box = document.getElementById('spDetail');
+  const head = `<div class="dt-head"><div class="dt-title">Well ${well} — Sampel #${sn}</div><div class="dt-close" onclick="closeSpDetail()">✕</div></div>`;
+
+  if(isNaN(od)){
+    box.style.display = 'block';
+    box.innerHTML = `${head}<div style="color:var(--text-secondary);">Belum ada bacaan OD untuk well ini.</div>`;
+    return;
+  }
+  if(_meanPc===null || _meanNc===null){
+    box.style.display = 'block';
+    box.innerHTML = `${head}<div style="color:var(--text-secondary);">OD = ${od.toFixed(4)}. Perlu lengkapkan bacaan kawalan PC (A1,B1) dan NC (C1,D1) dahulu untuk kira S/P%.</div>`;
+    return;
+  }
+
+  const sp = (od-_meanNc)/(_meanPc-_meanNc)*100;
+  let cat, cls;
+  if(sp<=110){cat='Negatif';cls='neg';}
+  else if(sp<120){cat='Doubtful';cls='dbt';}
+  else {cat='Positif';cls='pos';}
+
+  box.style.display = 'block';
+  box.innerHTML = `
+    ${head}
+    <div class="dt-formula">S/P% = (OD − ODnc) / (ODpc − ODnc) × 100
+= (${od.toFixed(4)} − ${_meanNc.toFixed(4)}) / (${_meanPc.toFixed(4)} − ${_meanNc.toFixed(4)}) × 100
+= ${sp.toFixed(2)}%</div>
+    <div class="dt-result ${cls}">Keputusan: ${cat}</div>`;
+}
+
+function recalc(){
+  const getVal = (r,c)=>{
+    const el = document.getElementById(`w_${ROWS[r]}${c}`);
+    const v = parseFloat(el.value);
+    return isNaN(v)? null : v;
+  };
+  const pc1 = getVal(0,1), pc2 = getVal(1,1);
+  const nc1 = getVal(2,1), nc2 = getVal(3,1);
+
+  let meanPc=null, meanNc=null;
+  if(pc1!==null && pc2!==null) meanPc = (pc1+pc2)/2;
+  if(nc1!==null && nc2!==null) meanNc = (nc1+nc2)/2;
+  _meanPc = meanPc; _meanNc = meanNc; // snapshot for detail panel
+
+  document.getElementById('meanPc').textContent = meanPc!==null? meanPc.toFixed(4):'-';
+  document.getElementById('meanNc').textContent = meanNc!==null? meanNc.toFixed(4):'-';
+
+  const badgePc = document.getElementById('badgePc');
+  const badgeRatio = document.getElementById('badgeRatio');
+  let valid = true;
+  if(meanPc!==null){
+    const ok = meanPc>0.35;
+    badgePc.textContent = ok?'ODpc OK':'ODpc NOT OK';
+    badgePc.className = 'badge '+(ok?'ok':'notok');
+    if(!ok) valid=false;
+  } else { badgePc.textContent='-'; badgePc.className='badge'; }
+
+  if(meanPc!==null && meanNc!==null && meanNc!==0){
+    const ratio = meanPc/meanNc;
+    const ok = ratio>3;
+    badgeRatio.textContent = ok? `Ratio OK (${ratio.toFixed(1)})` : `Ratio NOT OK (${ratio.toFixed(1)})`;
+    badgeRatio.className = 'badge '+(ok?'ok':'notok');
+    if(!ok) valid=false;
+  } else { badgeRatio.textContent='-'; badgeRatio.className='badge'; }
+
+  document.getElementById('warnBanner').classList.toggle('show', (meanPc!==null && meanNc!==null && !valid));
+
+  // reset S/P plate & Keputusan plate display
+  document.querySelectorAll('.sp-well:not(.ctrl)').forEach(el=>{
+    el.className = 'sp-well';
+    const sn = el.querySelector('.sn');
+    el.textContent = '–';
+    if(sn) el.appendChild(sn);
+  });
+
+  // compute S/P% for all sample wells
+  let results = [];
+  let neg=0,dbt=0,pos=0;
+  for(let c=1;c<=COLS;c++){
+    for(let r=0;r<8;r++){
+      const role = wellRole(r,c);
+      if(role!=='sample') continue;
+      const sn = sampleNumber(r,c);
+      const od = getVal(r,c);
+      const spCell = document.getElementById(`sp_${ROWS[r]}${c}`);
+      const resCell = document.getElementById(`res_${ROWS[r]}${c}`);
+      if(od===null) continue;
+      if(meanPc===null || meanNc===null || meanPc===meanNc) continue;
+      const sp = (od-meanNc)/(meanPc-meanNc)*100;
+      let cat, cls;
+      if(sp<=110){cat='Negatif';cls='res-neg';neg++;}
+      else if(sp<120){cat='Doubtful';cls='res-dbt';dbt++;}
+      else {cat='Positif';cls='res-pos';pos++;}
+      results.push({sn, well:`${ROWS[r]}${c}`, od, sp, cat, cls});
+      if(spCell){
+        const spCls = sp<=110?'neg':(sp<120?'dbt':'pos');
+        spCell.className = 'sp-well '+spCls;
+        spCell.innerHTML = `${sp.toFixed(0)}%<div class="sn">#${sn}</div>`;
+      }
+      if(resCell){
+        const spCls = sp<=110?'neg':(sp<120?'dbt':'pos');
+        const shortCat = sp<=110?'Neg':(sp<120?'Dbt':'Pos');
+        resCell.className = 'sp-well '+spCls;
+        resCell.innerHTML = `${shortCat}<div class="sn">#${sn}</div>`;
+      }
+    }
+  }
+  results.sort((a,b)=>a.sn-b.sn);
+
+  document.getElementById('cntNeg').textContent = neg;
+  document.getElementById('cntDbt').textContent = dbt;
+  document.getElementById('cntPos').textContent = pos;
+}
+recalc();
+</script>
+
+</div><!-- /brucellaModule -->
+
+</body>
+</html>
