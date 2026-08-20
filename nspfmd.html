@@ -307,7 +307,7 @@ body{
     <label>Pilih Ujian ELISA</label>
     <select id="elisaSelect" onchange="switchElisaModule()">
       <option value="brucella">Idvet Brucella</option>
-      <option value="nspfmd">Idvet NSP-FMD</option>
+      <option value="nspfmd" selected>Idvet NSP-FMD</option>
       <option value="ahs">Idvet AHS</option>
       <option value="ppr">Idvet PPR</option>
       <option value="ingezim">Ingezim EIA</option>
@@ -325,8 +325,8 @@ body{
 
 <div class="header">
   <div>
-    <h1>🧪 Brucella ELISA</h1>
-    <p>ID.vet Screen Brucellosis Serum (indirect) — MVZT Pahang</p>
+    <h1>🧪 FMD NSP-ELISA</h1>
+    <p>ID.vet FMD NSP (Competitive) — MVZT Pahang</p>
   </div>
 </div>
 
@@ -346,14 +346,11 @@ body{
   <div class="row">
     <div class="field" style="max-width:150px;">
       <label>Jumlah Sampel</label>
-      <input type="number" id="jumSampel" value="22" min="1" oninput="calcReagents()">
+      <input type="number" id="jumSampel" value="20" min="1" oninput="calcReagents()">
     </div>
   </div>
 
-  <div class="toggle-group">
-    <div class="toggle-btn active" id="tgConj10" onclick="setConjMode(10)">1:10 (45 min)</div>
-    <div class="toggle-btn" id="tgConj20" onclick="setConjMode(20)">1:20 (overnight)</div>
-  </div>
+  <div class="note" style="margin-top:0;margin-bottom:6px;">Conjugate Dilution — nisbah tetap 1:10 (dalam dilution buffer 13)</div>
   <div class="reagent-out">
     <div class="out-box"><div class="val" id="conjConc">-</div><div class="lbl">Konsentrat Conjugate (µl)</div></div>
     <div class="out-box"><div class="val" id="conjBuf">-</div><div class="lbl">Dilution Buffer 3 (µl)</div></div>
@@ -361,41 +358,41 @@ body{
 
   <div class="row" style="margin-top:10px;">
     <div class="field" style="max-width:150px;"><label>Wash Solution — Jum (mL)</label>
-      <input type="number" id="washInput" value="600" min="1" oninput="calcReagents()">
+      <input type="number" id="washInput" value="24" min="1" oninput="calcReagents()">
     </div>
   </div>
   <div class="reagent-out">
     <div class="out-box"><div class="val" id="washConc">-</div><div class="lbl">Konsentrat 20x (mL)</div></div>
     <div class="out-box"><div class="val" id="washH2O">-</div><div class="lbl">dH2O (mL)</div></div>
   </div>
-  <div class="note">Formula ikut lembaran asal: Konsentrat = Bil.Sampel × 100 µl ÷ nisbah (10x/20x); Wash Vol = Input × 6 × 0.3 mL ÷ 20x.</div>
+  <div class="note">Formula ikut lembaran asal: Konsentrat = Bil.Sampel × 100 µl ÷ 10; Wash Vol = Input × 10 × 0.3 mL ÷ 20x.</div>
 </div>
 
 <div class="card">
   <h2>Prosedur Ujian (SOP)
-    <span class="sop-progress" id="sopProgress">0/13</span>
+    <span class="sop-progress" id="sopProgress">0/14</span>
   </h2>
   <div class="sop-bar"><div class="sop-bar-fill" id="sopBarFill" style="width:0%;"></div></div>
 
   <div class="sop-group">
     <div class="sop-group-title">Persediaan Plat</div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">190 µl dilution buffer 2 ke semua well</div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl kawalan negatif ke A1 dan B1</div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl kawalan positif ke C1 dan D1</div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl setiap sampel ke well yang tinggal</div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Tutup & inkubat 45 min pada 21°C <span class="sop-sub">(atau overnight pada 21°C)</span>
-      <div class="timer-box" id="timerBox45" onclick="event.stopPropagation()">
-        <div class="timer-display" id="timerDisp45">45:00</div>
-        <button class="timer-btn" onclick="event.stopPropagation();toggleTimer('45',45*60)">Mula</button>
-        <button class="timer-btn reset" onclick="event.stopPropagation();resetTimer('45',45*60)">Reset</button>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">50 µl dilution buffer 18 ke semua well <span class="sop-sub">(atau 90 µl jika overnight)</span></div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">30 µl kawalan negatif ke A1 dan B1 <span class="sop-sub">(atau 10 µl jika overnight)</span></div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">30 µl kawalan positif ke C1 dan D1 <span class="sop-sub">(atau 10 µl jika overnight)</span></div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">30 µl setiap sampel ke well yang tinggal <span class="sop-sub">(atau 10 µl jika overnight)</span></div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Tutup & inkubat 2 jam pada 37°C <span class="sop-sub">(atau overnight pada 21°C)</span>
+      <div class="timer-box" id="timerBox120" onclick="event.stopPropagation()">
+        <div class="timer-display" id="timerDisp120">2:00:00</div>
+        <button class="timer-btn" onclick="event.stopPropagation();toggleTimer('120',120*60)">Mula</button>
+        <button class="timer-btn reset" onclick="event.stopPropagation();resetTimer('120',120*60)">Reset</button>
       </div>
     </div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Basuh 3x dengan 300 µl</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Basuh 5x dengan 300 µl</div></div>
   </div>
 
   <div class="sop-group">
     <div class="sop-group-title">Conjugate</div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Sediakan conjugate 1:10 (45min) atau 1:20 (overnight) — buffer 3</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Sediakan conjugate 1/10 dalam dilution buffer 13</div></div>
     <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">100 µl conjugate ke semua well</div></div>
     <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Tutup & inkubat 30 min pada 21°C
       <div class="timer-box" id="timerBox30" onclick="event.stopPropagation()">
@@ -404,7 +401,7 @@ body{
         <button class="timer-btn reset" onclick="event.stopPropagation();resetTimer('30',30*60)">Reset</button>
       </div>
     </div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Basuh 3x dengan 300 µl</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Basuh 5x dengan 300 µl</div></div>
   </div>
 
   <div class="sop-group">
@@ -475,7 +472,7 @@ body{
       <div class="badge" id="badgeRatio">-</div>
     </div>
   </div>
-  <div class="note">Syarat: ODpc &gt; 0.350 dan ODpc / ODnc &gt; 3</div>
+  <div class="note">Syarat: ODnc &gt; 0.700 dan ODpc / ODnc &lt; 3</div>
 </div>
 
 <div class="card">
@@ -484,9 +481,8 @@ body{
     <div class="plate" id="spPlateGrid"></div>
   </div>
   <div class="legend">
-    <span><span class="dot" style="background:var(--green);"></span>Negatif ≤110%</span>
-    <span><span class="dot" style="background:var(--amber);"></span>Doubtful 110–120%</span>
-    <span><span class="dot" style="background:var(--red);"></span>Positif ≥120%</span>
+    <span><span class="dot" style="background:var(--green);"></span>Negatif (S/P% &gt;50)</span>
+    <span><span class="dot" style="background:var(--red);"></span>Positif (S/P% ≤50)</span>
   </div>
   <div id="spDetail" class="detail-box" style="display:none;"></div>
   <div class="note">👆 Tap mana-mana well untuk lihat pengiraan.</div>
@@ -499,7 +495,6 @@ body{
   </div>
   <div class="legend">
     <span><span class="dot" style="background:var(--green);"></span>Negatif</span>
-    <span><span class="dot" style="background:var(--amber);"></span>Doubtful</span>
     <span><span class="dot" style="background:var(--red);"></span>Positif</span>
   </div>
 </div>
@@ -508,10 +503,9 @@ body{
   <h2>Ringkasan Keputusan</h2>
   <div class="summary">
     <div class="sum-box neg"><div class="n" id="cntNeg">0</div><div class="l">NEGATIF</div></div>
-    <div class="sum-box dbt"><div class="n" id="cntDbt">0</div><div class="l">DOUBTFUL</div></div>
     <div class="sum-box pos"><div class="n" id="cntPos">0</div><div class="l">POSITIF</div></div>
   </div>
-  <div class="note">S/P % ≤ 110 Negatif · 110–120 Doubtful · ≥ 120 Positif</div>
+  <div class="note">S/P % &gt; 50 Negatif · S/P % ≤ 50 Positif</div>
 </div>
 
 </div><!-- /col-right -->
@@ -599,7 +593,7 @@ for(let r=0;r<8;r++){
 }
 spGrid.innerHTML = spHtml;
 
-// build Keputusan plate (Negatif/Doubtful/Positif labels)
+// build Keputusan plate (Negatif/Positif labels)
 const resGrid = document.getElementById('resPlateGrid');
 let resHtml = '<div class="ph"></div>';
 for(let c=1;c<=COLS;c++) resHtml += `<div class="ph">${c}</div>`;
@@ -618,23 +612,16 @@ for(let r=0;r<8;r++){
 }
 resGrid.innerHTML = resHtml;
 
-let conjMode = 10;
-function setConjMode(mode){
-  conjMode = mode;
-  document.getElementById('tgConj10').classList.toggle('active', mode===10);
-  document.getElementById('tgConj20').classList.toggle('active', mode===20);
-  calcReagents();
-}
 function calcReagents(){
   const n = parseFloat(document.getElementById('jumSampel').value) || 0;
   const V = n*100; // ul total volume needed
-  const conc = conjMode>0 ? V/conjMode : 0;
+  const conc = V/10; // nisbah tetap 1:10
   const buf = V-conc;
   document.getElementById('conjConc').textContent = conc? conc.toFixed(0):'-';
   document.getElementById('conjBuf').textContent = buf? buf.toFixed(0):'-';
 
   const nw = parseFloat(document.getElementById('washInput').value) || 0;
-  const Vw = nw*6*0.3; // ml
+  const Vw = nw*10*0.3; // ml
   const concW = Vw/20;
   const h2o = Vw-concW;
   document.getElementById('washConc').textContent = concW? concW.toFixed(1):'-';
@@ -780,7 +767,7 @@ function exportPrint(){
   const noKes = document.getElementById('noKes').value || '-';
 
   const tarikhFile = formatTarikhForFilename(document.getElementById('tarikh').value);
-  const printTitle = tarikhFile ? `Brucella ELISA - ${tarikhFile}` : 'Brucella ELISA';
+  const printTitle = tarikhFile ? `FMD NSP ELISA - ${tarikhFile}` : 'FMD NSP ELISA';
 
   const getCtrlOd = (r,c)=>{
     const el = document.getElementById(`w_${ROWS[r]}${c}`);
@@ -797,33 +784,31 @@ function exportPrint(){
   const spTable = buildPrintTable((r,c)=>{
     const el = document.getElementById(`w_${ROWS[r]}${c}`);
     const od = el && el.value!=='' ? parseFloat(el.value) : null;
-    if(od===null || _meanPc===null || _meanNc===null || _meanPc===_meanNc){
+    if(od===null || _meanNc===null || _meanNc===0){
       return {text:'–'};
     }
-    const sp = (od-_meanNc)/(_meanPc-_meanNc)*100;
+    const sp = od/_meanNc*100;
     let label, cls;
-    if(sp<=110){label='N';cls='';}
-    else if(sp<120){label='D';cls='dbt';}
+    if(sp>50){label='N';cls='';}
     else {label='P';cls='pos';}
     return {text: sp.toFixed(0)+'% ('+label+')', cls};
   });
 
   const bodyContent = `
-    <h1>Brucella ELISA — Keputusan Ujian</h1>
+    <h1>FMD NSP ELISA — Keputusan Ujian</h1>
     <div class="pmeta">
-      <b>Ujian:</b> ID.vet Screen Brucellosis Serum (indirect)<br>
+      <b>Ujian:</b> ID.vet FMD NSP (Competitive)<br>
       <b>Tarikh Ujian:</b> ${tarikh} &nbsp;&nbsp; <b>No Kes:</b> ${noKes}<br>
       <b>Mean ODpc:</b> ${_meanPc!==null?_meanPc.toFixed(4):'-'} &nbsp;&nbsp;
       <b>Mean ODnc:</b> ${_meanNc!==null?_meanNc.toFixed(4):'-'} &nbsp;&nbsp;
       <b>Negatif:</b> ${document.getElementById('cntNeg').textContent} &nbsp;
-      <b>Doubtful:</b> ${document.getElementById('cntDbt').textContent} &nbsp;
       <b>Positif:</b> ${document.getElementById('cntPos').textContent}
     </div>
     <h2>Plat OD</h2>
     ${odTable}
     <h2>Plat S/P%</h2>
     ${spTable}
-    <div class="pmeta" style="margin-top:2px;">N = Negatif (≤110%) &nbsp; D = Doubtful (110–120%, tebal) &nbsp; P = Positif (≥120%, tebal)</div>
+    <div class="pmeta" style="margin-top:2px;">N = Negatif (S/P% &gt;50%) &nbsp; P = Positif (S/P% ≤50%, tebal)</div>
   `;
 
   const printDoc = `<!DOCTYPE html>
@@ -1027,23 +1012,22 @@ function showSpDetail(r, c){
     box.innerHTML = `${head}<div style="color:var(--text-secondary);">Belum ada bacaan OD untuk well ini.</div>`;
     return;
   }
-  if(_meanPc===null || _meanNc===null){
+  if(_meanNc===null || _meanNc===0){
     box.style.display = 'block';
-    box.innerHTML = `${head}<div style="color:var(--text-secondary);">OD = ${od.toFixed(4)}. Perlu lengkapkan bacaan kawalan PC (A1,B1) dan NC (C1,D1) dahulu untuk kira S/P%.</div>`;
+    box.innerHTML = `${head}<div style="color:var(--text-secondary);">OD = ${od.toFixed(4)}. Perlu lengkapkan bacaan kawalan NC (C1,D1) dahulu untuk kira S/P%.</div>`;
     return;
   }
 
-  const sp = (od-_meanNc)/(_meanPc-_meanNc)*100;
+  const sp = od/_meanNc*100;
   let cat, cls;
-  if(sp<=110){cat='Negatif';cls='neg';}
-  else if(sp<120){cat='Doubtful';cls='dbt';}
+  if(sp>50){cat='Negatif';cls='neg';}
   else {cat='Positif';cls='pos';}
 
   box.style.display = 'block';
   box.innerHTML = `
     ${head}
-    <div class="dt-formula">S/P% = (OD − ODnc) / (ODpc − ODnc) × 100
-= (${od.toFixed(4)} − ${_meanNc.toFixed(4)}) / (${_meanPc.toFixed(4)} − ${_meanNc.toFixed(4)}) × 100
+    <div class="dt-formula">S/P% = OD / ODnc × 100
+= ${od.toFixed(4)} / ${_meanNc.toFixed(4)} × 100
 = ${sp.toFixed(2)}%</div>
     <div class="dt-result ${cls}">Keputusan: ${cat}</div>`;
 }
@@ -1068,16 +1052,16 @@ function recalc(){
   const badgePc = document.getElementById('badgePc');
   const badgeRatio = document.getElementById('badgeRatio');
   let valid = true;
-  if(meanPc!==null){
-    const ok = meanPc>0.35;
-    badgePc.textContent = ok?'ODpc OK':'ODpc NOT OK';
+  if(meanNc!==null){
+    const ok = meanNc>0.700;
+    badgePc.textContent = ok?'ODnc OK':'ODnc NOT OK';
     badgePc.className = 'badge '+(ok?'ok':'notok');
     if(!ok) valid=false;
   } else { badgePc.textContent='-'; badgePc.className='badge'; }
 
   if(meanPc!==null && meanNc!==null && meanNc!==0){
     const ratio = meanPc/meanNc;
-    const ok = ratio>3;
+    const ok = ratio<3;
     badgeRatio.textContent = ok? `Ratio OK (${ratio.toFixed(1)})` : `Ratio NOT OK (${ratio.toFixed(1)})`;
     badgeRatio.className = 'badge '+(ok?'ok':'notok');
     if(!ok) valid=false;
@@ -1093,9 +1077,9 @@ function recalc(){
     if(sn) el.appendChild(sn);
   });
 
-  // compute S/P% for all sample wells
+  // compute S/P% for all sample wells (NSP-FMD competitive: S/P% = OD / MeanODnc * 100)
   let results = [];
-  let neg=0,dbt=0,pos=0;
+  let neg=0,pos=0;
   for(let c=1;c<=COLS;c++){
     for(let r=0;r<8;r++){
       const role = wellRole(r,c);
@@ -1105,21 +1089,20 @@ function recalc(){
       const spCell = document.getElementById(`sp_${ROWS[r]}${c}`);
       const resCell = document.getElementById(`res_${ROWS[r]}${c}`);
       if(od===null) continue;
-      if(meanPc===null || meanNc===null || meanPc===meanNc) continue;
-      const sp = (od-meanNc)/(meanPc-meanNc)*100;
+      if(meanNc===null || meanNc===0) continue;
+      const sp = od/meanNc*100;
       let cat, cls;
-      if(sp<=110){cat='Negatif';cls='res-neg';neg++;}
-      else if(sp<120){cat='Doubtful';cls='res-dbt';dbt++;}
+      if(sp>50){cat='Negatif';cls='res-neg';neg++;}
       else {cat='Positif';cls='res-pos';pos++;}
       results.push({sn, well:`${ROWS[r]}${c}`, od, sp, cat, cls});
       if(spCell){
-        const spCls = sp<=110?'neg':(sp<120?'dbt':'pos');
+        const spCls = sp>50?'neg':'pos';
         spCell.className = 'sp-well '+spCls;
         spCell.innerHTML = `${sp.toFixed(0)}%<div class="sn">#${sn}</div>`;
       }
       if(resCell){
-        const spCls = sp<=110?'neg':(sp<120?'dbt':'pos');
-        const shortCat = sp<=110?'Neg':(sp<120?'Dbt':'Pos');
+        const spCls = sp>50?'neg':'pos';
+        const shortCat = sp>50?'Neg':'Pos';
         resCell.className = 'sp-well '+spCls;
         resCell.innerHTML = `${shortCat}<div class="sn">#${sn}</div>`;
       }
@@ -1128,7 +1111,6 @@ function recalc(){
   results.sort((a,b)=>a.sn-b.sn);
 
   document.getElementById('cntNeg').textContent = neg;
-  document.getElementById('cntDbt').textContent = dbt;
   document.getElementById('cntPos').textContent = pos;
 }
 recalc();
