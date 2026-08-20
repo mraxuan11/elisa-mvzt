@@ -321,7 +321,7 @@ body{
   <div style="font-size:11.5px;color:var(--text-secondary);">Kalkulator untuk ujian ini belum dibina lagi.</div>
 </div>
 
-<div id="brucellaModule">
+<div id="moduleContent">
 
 <div class="header">
   <div>
@@ -526,20 +526,18 @@ body{
 <script>
 function switchElisaModule(){
   const val = document.getElementById('elisaSelect').value;
-  const names = {
-    nspfmd: 'Idvet NSP-FMD',
-    ahs: 'Idvet AHS',
-    ppr: 'Idvet PPR',
-    ingezim: 'Ingezim EIA'
+  const fileMap = {
+    brucella: 'index.html',
+    nspfmd: 'nspfmd.html'
   };
-  if(val==='brucella'){
-    document.getElementById('brucellaModule').style.display = 'block';
-    document.getElementById('comingSoon').style.display = 'none';
-  } else {
-    document.getElementById('brucellaModule').style.display = 'none';
-    document.getElementById('comingSoonTitle').textContent = names[val] + ' — akan datang';
-    document.getElementById('comingSoon').style.display = 'block';
+  if(fileMap[val]){
+    window.location.href = fileMap[val];
+    return;
   }
+  const names = { ahs:'Idvet AHS', ppr:'Idvet PPR', ingezim:'Ingezim EIA' };
+  document.getElementById('moduleContent').style.display = 'none';
+  document.getElementById('comingSoonTitle').textContent = names[val] + ' — akan datang';
+  document.getElementById('comingSoon').style.display = 'block';
 }
 
 const ROWS = ['A','B','C','D','E','F','G','H'];
@@ -881,11 +879,16 @@ function resetSop(){
 updateSopProgress();
 
 // ===== Timer (45/30/15 min inkubasi) =====
-const timerState = {}; // key -> {remaining, running, intervalId}
+// Guna endTime (timestamp) supaya countdown tepat walaupun tab tak aktif/di-throttle browser
+const timerState = {}; // key -> {endTime, remaining, running, intervalId}
+const TIMER_STORAGE_KEY = 'elisaTimers_' + location.pathname;
 
 function formatMMSS(sec){
-  const m = Math.floor(sec/60);
+  sec = Math.max(0, Math.round(sec));
+  const h = Math.floor(sec/3600);
+  const m = Math.floor((sec%3600)/60);
   const s = sec%60;
+  if(h>0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
@@ -904,46 +907,108 @@ function playBeep(){
   }catch(e){ /* audio not available, ignore */ }
 }
 
+function saveTimerState(){
+  try{
+    const plain = {};
+    Object.keys(timerState).forEach(k=>{
+      const st = timerState[k];
+      plain[k] = {endTime: st.endTime, running: st.running};
+    });
+    sessionStorage.setItem(TIMER_STORAGE_KEY, JSON.stringify(plain));
+  }catch(e){}
+}
+
+function tickTimer(key){
+  const st = timerState[key];
+  if(!st || !st.running) return;
+  const remaining = Math.round((st.endTime - Date.now())/1000);
+  const disp = document.getElementById(`timerDisp${key}`);
+  if(disp) disp.textContent = formatMMSS(remaining);
+  if(remaining<=0){
+    clearInterval(st.intervalId);
+    st.running = false;
+    st.intervalId = null;
+    const btn = document.querySelector(`#timerBox${key} .timer-btn:not(.reset)`);
+    const box = document.getElementById(`timerBox${key}`);
+    if(btn) btn.textContent = 'Mula';
+    if(box) box.classList.add('done');
+    playBeep();
+    if(navigator.vibrate) navigator.vibrate([300,100,300,100,300]);
+    saveTimerState();
+  }
+}
+
 function toggleTimer(key, totalSec){
   if(!timerState[key]){
-    timerState[key] = {remaining: totalSec, running:false, intervalId:null};
+    timerState[key] = {endTime:null, remaining: totalSec, running:false, intervalId:null};
   }
   const st = timerState[key];
   const btn = document.querySelector(`#timerBox${key} .timer-btn:not(.reset)`);
   const box = document.getElementById(`timerBox${key}`);
 
   if(st.running){
+    // jeda — simpan baki masa
     clearInterval(st.intervalId);
+    st.intervalId = null;
     st.running = false;
+    st.remaining = Math.max(0, Math.round((st.endTime - Date.now())/1000));
     btn.textContent = 'Sambung';
+    saveTimerState();
     return;
   }
 
   box.classList.remove('done');
+  const remainingToUse = (st.remaining!==undefined && st.remaining!==null) ? st.remaining : totalSec;
+  st.endTime = Date.now() + remainingToUse*1000;
   st.running = true;
   btn.textContent = 'Jeda';
-  st.intervalId = setInterval(()=>{
-    st.remaining--;
-    document.getElementById(`timerDisp${key}`).textContent = formatMMSS(Math.max(st.remaining,0));
-    if(st.remaining<=0){
-      clearInterval(st.intervalId);
-      st.running = false;
-      btn.textContent = 'Mula';
-      box.classList.add('done');
-      playBeep();
-      if(navigator.vibrate) navigator.vibrate([300,100,300,100,300]);
-    }
-  }, 1000);
+  if(st.intervalId) clearInterval(st.intervalId);
+  st.intervalId = setInterval(()=>tickTimer(key), 1000);
+  tickTimer(key); // update serta-merta
+  saveTimerState();
 }
 
 function resetTimer(key, totalSec){
   if(timerState[key] && timerState[key].intervalId) clearInterval(timerState[key].intervalId);
-  timerState[key] = {remaining: totalSec, running:false, intervalId:null};
+  timerState[key] = {endTime:null, remaining: totalSec, running:false, intervalId:null};
   document.getElementById(`timerDisp${key}`).textContent = formatMMSS(totalSec);
   document.getElementById(`timerBox${key}`).classList.remove('done');
   const btn = document.querySelector(`#timerBox${key} .timer-btn:not(.reset)`);
   btn.textContent = 'Mula';
+  saveTimerState();
 }
+
+// Bila tab kembali aktif (visibilitychange), segerakan semula semua paparan timer
+// supaya tak nampak "terhenti" walaupun setInterval di-throttle semasa tab tak aktif
+document.addEventListener('visibilitychange', ()=>{
+  if(!document.hidden){
+    Object.keys(timerState).forEach(key=>{
+      if(timerState[key].running) tickTimer(key);
+    });
+  }
+});
+
+// Pulihkan timer yang masih berjalan selepas reload/tab restore (jika ada)
+(function restoreTimers(){
+  try{
+    const raw = sessionStorage.getItem(TIMER_STORAGE_KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    Object.keys(saved).forEach(key=>{
+      const s = saved[key];
+      if(s.running && s.endTime){
+        const remaining = Math.round((s.endTime - Date.now())/1000);
+        if(remaining>0 && document.getElementById(`timerDisp${key}`)){
+          timerState[key] = {endTime: s.endTime, remaining, running:true, intervalId:null};
+          const btn = document.querySelector(`#timerBox${key} .timer-btn:not(.reset)`);
+          if(btn) btn.textContent = 'Jeda';
+          timerState[key].intervalId = setInterval(()=>tickTimer(key), 1000);
+          tickTimer(key);
+        }
+      }
+    });
+  }catch(e){}
+})();
 
 function closeSpDetail(){
   document.getElementById('spDetail').style.display = 'none';
@@ -1069,7 +1134,7 @@ function recalc(){
 recalc();
 </script>
 
-</div><!-- /brucellaModule -->
+</div><!-- /moduleContent -->
 
 </body>
 </html>
