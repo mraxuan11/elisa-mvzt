@@ -888,19 +888,66 @@ function formatMMSS(sec){
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-function playBeep(){
+let alarmCtx = null;
+let alarmInterval = null;
+let alarmStopTimeout = null;
+const ALARM_MAX_MS = 5*60*1000; // bunyi berterusan maksimum 5 minit
+
+function getAlarmCtx(){
   try{
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if(!alarmCtx) alarmCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(alarmCtx.state === 'suspended') alarmCtx.resume();
+  }catch(e){ alarmCtx = null; }
+  return alarmCtx;
+}
+
+function playBeep(){
+  const ctx = getAlarmCtx();
+  if(!ctx) return;
+  try{
     for(let i=0;i<3;i++){
+      const t = ctx.currentTime + i*0.35;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.connect(gain); gain.connect(ctx.destination);
       osc.frequency.value = 880;
-      gain.gain.setValueAtTime(0.3, ctx.currentTime + i*0.35);
-      osc.start(ctx.currentTime + i*0.35);
-      osc.stop(ctx.currentTime + i*0.35 + 0.25);
+      gain.gain.setValueAtTime(0.3, t);
+      osc.start(t);
+      osc.stop(t + 0.25);
     }
   }catch(e){ /* audio not available, ignore */ }
+}
+
+function showAlarmBanner(){
+  let b = document.getElementById('alarmBanner');
+  if(!b){
+    b = document.createElement('div');
+    b.id = 'alarmBanner';
+    b.style.cssText = 'position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:9999;background:#7c3aed;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.3);display:flex;align-items:center;gap:12px;font-weight:700;font-size:14px;';
+    b.innerHTML = '<span>⏰ Masa tamat!</span><button type="button" onclick="stopAlarm()" style="background:#fff;color:#7c3aed;border:0;border-radius:8px;padding:8px 14px;font-weight:800;cursor:pointer;">Hentikan Bunyi</button>';
+    document.body.appendChild(b);
+  }
+  b.style.display = 'flex';
+}
+
+function startAlarm(){
+  stopAlarm();
+  showAlarmBanner();
+  const ring = ()=>{
+    playBeep();
+    if(navigator.vibrate) navigator.vibrate([300,100,300,100,300]);
+  };
+  ring();
+  alarmInterval = setInterval(ring, 1500);
+  alarmStopTimeout = setTimeout(stopAlarm, ALARM_MAX_MS);
+}
+
+function stopAlarm(){
+  if(alarmInterval){ clearInterval(alarmInterval); alarmInterval = null; }
+  if(alarmStopTimeout){ clearTimeout(alarmStopTimeout); alarmStopTimeout = null; }
+  if(navigator.vibrate) navigator.vibrate(0);
+  const b = document.getElementById('alarmBanner');
+  if(b) b.style.display = 'none';
 }
 
 function saveTimerState(){
@@ -928,13 +975,14 @@ function tickTimer(key){
     const box = document.getElementById(`timerBox${key}`);
     if(btn) btn.textContent = 'Mula';
     if(box) box.classList.add('done');
-    playBeep();
-    if(navigator.vibrate) navigator.vibrate([300,100,300,100,300]);
+    startAlarm();
     saveTimerState();
   }
 }
 
 function toggleTimer(key, totalSec){
+  stopAlarm();
+  getAlarmCtx(); // aktifkan audio selepas klik pengguna
   if(!timerState[key]){
     timerState[key] = {endTime:null, remaining: totalSec, running:false, intervalId:null};
   }
@@ -965,6 +1013,7 @@ function toggleTimer(key, totalSec){
 }
 
 function resetTimer(key, totalSec){
+  stopAlarm();
   if(timerState[key] && timerState[key].intervalId) clearInterval(timerState[key].intervalId);
   timerState[key] = {endTime:null, remaining: totalSec, running:false, intervalId:null};
   document.getElementById(`timerDisp${key}`).textContent = formatMMSS(totalSec);
