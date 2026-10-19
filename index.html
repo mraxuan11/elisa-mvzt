@@ -124,7 +124,8 @@ body{
 .out-box .val{font-size:16px;font-weight:800;color:var(--accent-dark);}
 .out-box .lbl{font-size:9.5px;color:var(--text-secondary);font-weight:700;margin-top:1px;}
 
-.plate-wrap{overflow-x:auto;}
+.plate-wrap{overflow-x:auto;overflow-y:hidden;padding:8px 0 6px;}
+@media (min-width:700px){ .plate-wrap{overflow:visible;} }
 .plate{
   display:grid;
   grid-template-columns:26px repeat(12,minmax(46px,1fr));
@@ -360,15 +361,17 @@ body{
   </div>
 
   <div class="row" style="margin-top:10px;">
-    <div class="field" style="max-width:150px;"><label>Wash Solution — Jum (mL)</label>
-      <input type="number" id="washInput" value="600" min="1" oninput="calcReagents()">
+    <div class="field" style="max-width:220px;"><label>Total Wash Solution</label>
+      <div style="display:flex;gap:6px;">
+        <input type="number" id="washInput" value="1" min="1" step="any" oninput="calcReagents()" style="flex:1;min-width:0;">
+        <select id="washUnit" onchange="calcReagents()" style="width:70px;"><option value="1">mL</option><option value="1000" selected>L</option></select>
+      </div>
     </div>
   </div>
   <div class="reagent-out">
     <div class="out-box"><div class="val" id="washConc">-</div><div class="lbl">Konsentrat 20x (mL)</div></div>
     <div class="out-box"><div class="val" id="washH2O">-</div><div class="lbl">dH2O (mL)</div></div>
   </div>
-  <div class="note">Formula ikut lembaran asal: Konsentrat = Bil.Sampel × 100 µl ÷ nisbah (10x/20x); Wash Vol = Input × 6 × 0.3 mL ÷ 20x.</div>
 </div>
 
 <div class="card">
@@ -643,11 +646,11 @@ function calcReagents(){
   document.getElementById('conjBuf').textContent = buf? buf.toFixed(0):'-';
 
   const nw = parseFloat(document.getElementById('washInput').value) || 0;
-  const Vw = nw*6*0.3; // ml
+  const Vw = nw*(parseFloat(document.getElementById('washUnit').value)||1); // jumlah mL
   const concW = Vw/20;
   const h2o = Vw-concW;
-  document.getElementById('washConc').textContent = concW? concW.toFixed(1):'-';
-  document.getElementById('washH2O').textContent = h2o? h2o.toFixed(1):'-';
+  document.getElementById('washConc').textContent = concW? concW.toFixed(2):'-';
+  document.getElementById('washH2O').textContent = h2o? h2o.toFixed(2):'-';
 }
 calcReagents();
 
