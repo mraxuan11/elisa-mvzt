@@ -309,9 +309,7 @@ body{
     <select id="elisaSelect" onchange="switchElisaModule()">
       <option value="brucella">Idvet Brucella</option>
       <option value="nspfmd">Idvet NSP-FMD</option>
-      <option value="ahs">Idvet AHS</option>
-      <option value="ppr">Idvet PPR</option>
-      <option value="ingezim">Ingezim EIA</option>
+      <option value="eia">Idvet EIA</option>
     </select>
   </div>
 </div>
@@ -532,13 +530,13 @@ function switchElisaModule(){
   const fileMap = {
     brucella: 'index.html',
     nspfmd: 'nspfmd.html',
-    ahs: 'ahs.html'
+    eia: 'eia.html'
   };
   if(fileMap[val]){
     window.location.href = fileMap[val];
     return;
   }
-  const names = { ahs:'Idvet AHS', ppr:'Idvet PPR', ingezim:'Ingezim EIA' };
+  const names = { ppr:'Idvet PPR' };
   document.getElementById('moduleContent').style.display = 'none';
   document.getElementById('comingSoonTitle').textContent = names[val] + ' — akan datang';
   document.getElementById('comingSoon').style.display = 'block';
