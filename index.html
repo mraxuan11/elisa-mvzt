@@ -383,8 +383,8 @@ body{
   <div class="sop-group">
     <div class="sop-group-title">Persediaan Plat</div>
     <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">190 µl dilution buffer 2 ke semua well</div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl kawalan negatif ke A1 dan B1</div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl kawalan positif ke C1 dan D1</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl kawalan positif ke A1 dan B1</div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl kawalan negatif ke C1 dan D1</div></div>
     <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">10 µl setiap sampel ke well yang tinggal</div></div>
     <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Tutup & inkubat 45 min pada 21°C <span class="sop-sub">(atau overnight pada 21°C)</span>
       <div class="timer-box" id="timerBox45" onclick="event.stopPropagation()">
@@ -531,7 +531,8 @@ function switchElisaModule(){
   const val = document.getElementById('elisaSelect').value;
   const fileMap = {
     brucella: 'index.html',
-    nspfmd: 'nspfmd.html'
+    nspfmd: 'nspfmd.html',
+    ahs: 'ahs.html'
   };
   if(fileMap[val]){
     window.location.href = fileMap[val];

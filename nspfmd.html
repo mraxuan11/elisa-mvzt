@@ -380,8 +380,8 @@ body{
   <div class="sop-group">
     <div class="sop-group-title">Persediaan Plat</div>
     <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">50 µl dilution buffer 18 ke semua well <span class="sop-sub">(atau 90 µl jika overnight)</span></div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">30 µl kawalan negatif ke A1 dan B1 <span class="sop-sub">(atau 10 µl jika overnight)</span></div></div>
-    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">30 µl kawalan positif ke C1 dan D1 <span class="sop-sub">(atau 10 µl jika overnight)</span></div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">30 µl kawalan positif ke A1 dan B1 <span class="sop-sub">(atau 10 µl jika overnight)</span></div></div>
+    <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">30 µl kawalan negatif ke C1 dan D1 <span class="sop-sub">(atau 10 µl jika overnight)</span></div></div>
     <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">30 µl setiap sampel ke well yang tinggal <span class="sop-sub">(atau 10 µl jika overnight)</span></div></div>
     <div class="sop-item" onclick="toggleSop(this)"><div class="sop-check-col"><div class="sop-check"></div></div><div class="sop-text">Tutup & inkubat 2 jam pada 37°C <span class="sop-sub">(atau overnight pada 21°C)</span>
       <div class="timer-box" id="timerBox120" onclick="event.stopPropagation()">
@@ -525,7 +525,8 @@ function switchElisaModule(){
   const val = document.getElementById('elisaSelect').value;
   const fileMap = {
     brucella: 'index.html',
-    nspfmd: 'nspfmd.html'
+    nspfmd: 'nspfmd.html',
+    ahs: 'ahs.html'
   };
   if(fileMap[val]){
     window.location.href = fileMap[val];
