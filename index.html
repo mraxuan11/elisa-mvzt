@@ -287,7 +287,7 @@ body{
   .print-area h1{font-size:14px;margin:0 0 2px;}
   .print-area h2{font-size:10px;color:#000;margin:6px 0 3px;text-transform:uppercase;}
   .print-area .pmeta{font-size:9px;color:#000;margin-bottom:5px;line-height:1.4;}
-  .print-area table{border-collapse:collapse;width:100%;margin-bottom:6px;font-size:8px;table-layout:fixed;page-break-inside:avoid;}
+  .print-area table{border-collapse:collapse;width:100%;margin-bottom:6px;font-size:8px;table-layout:fixed;page-break-inside:avoid;border:2px solid #000;}
   .print-area th,.print-area td{border:1px solid #000;text-align:center;padding:5px 0;color:#000;overflow:hidden;white-space:nowrap;}
   .print-area th.rh{width:16px;}
   .print-area td.ctrl{font-weight:bold;}
@@ -818,7 +818,7 @@ function exportPrint(){
     if(sp<=110){label='N';cls='';}
     else if(sp<120){label='D';cls='dbt';}
     else {label='P';cls='pos';}
-    return {text: sp.toFixed(0)+'% ('+label+')', cls};
+    return {text: sp.toFixed(2)+' ('+label+')', cls};
   });
 
   const bodyContent = `
@@ -848,8 +848,8 @@ function exportPrint(){
   h1{font-size:14px;margin:0 0 2px;}
   h2{font-size:10px;color:#000;margin:6px 0 3px;text-transform:uppercase;}
   .pmeta{font-size:9px;color:#000;margin-bottom:5px;line-height:1.4;}
-  table{border-collapse:collapse;width:100%;margin-bottom:6px;font-size:8px;table-layout:fixed;page-break-inside:avoid;}
-  th,td{border:1px solid #000;text-align:center;padding:5px 0;color:#000;overflow:hidden;white-space:nowrap;}
+  table{border-collapse:collapse;width:100%;margin-bottom:6px;font-size:8px;table-layout:fixed;page-break-inside:avoid;border:2px solid #000;}
+  th,td{border:1px solid #000;-webkit-print-color-adjust:exact;print-color-adjust:exact;text-align:center;padding:5px 0;color:#000;overflow:hidden;white-space:nowrap;}
   th.rh{width:16px;}
   td.ctrl{font-weight:bold;}
   td.dbt,td.pos{font-weight:bold;}
@@ -1176,7 +1176,7 @@ function recalc(){
       if(spCell){
         const spCls = sp<=110?'neg':(sp<120?'dbt':'pos');
         spCell.className = 'sp-well '+spCls;
-        spCell.innerHTML = `${sp.toFixed(0)}%<div class="sn">#${sn}</div>`;
+        spCell.innerHTML = `${sp.toFixed(2)}<div class="sn">#${sn}</div>`;
       }
       if(resCell){
         const spCls = sp<=110?'neg':(sp<120?'dbt':'pos');
